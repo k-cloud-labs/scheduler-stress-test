@@ -1,5 +1,5 @@
 # scheduler-stress-test
-This is a stress testing tool for the scheduler.
+This is a stress testing tool for the scheduler in a large-scale scenario.
 
 ### Preparatory Work
 To simulate a large-scale scheduling scenario, you can create a large number of nodes as needed using **kwok**. The nodes you create may be in a **NotReady** state. In order to use the nodes to schedule pods, the "pod.yaml" file must add a tolerance to tolerate all **NoSchedule** taints.
