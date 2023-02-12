@@ -125,17 +125,22 @@ func (t *task) Start(ctx context.Context) error {
 			var (
 				scheduled int
 				avg       time.Duration
-				m         time.Duration
+				start     = time.Now().Add(365 * 24 * 60 * 60 * time.Second)
+				end       time.Time
 			)
 
 			for _, pod := range pods {
+				if pod.CreationTimestamp.Time.Unix() < start.Unix() {
+					start = pod.CreationTimestamp.Time
+				}
+
 				_, cond := getPodCondition(&pod.Status, corev1.PodScheduled)
 				if cond != nil && cond.Status == corev1.ConditionTrue {
 					scheduled++
 					scheduleTime := cond.LastTransitionTime.Sub(pod.CreationTimestamp.Time)
 					avg += scheduleTime
-					if scheduleTime > m {
-						m = scheduleTime
+					if end.Unix() < cond.LastTransitionTime.Unix() {
+						end = cond.LastTransitionTime.Time
 					}
 				}
 			}
@@ -144,18 +149,27 @@ func (t *task) Start(ctx context.Context) error {
 				avg /= time.Duration(len(pods))
 			}
 
+			m := func() time.Duration {
+				if scheduled == 0 {
+					return time.Duration(0)
+				}
+
+				return end.Sub(start)
+			}()
+
+			countPerSecond := func() float64 {
+				if m.Seconds() == 0 {
+					return 0
+				}
+				return float64(len(pods)) / m.Seconds()
+			}()
+
 			klog.Infof("All: %d, Scheduled: %d, Unscheduled: %d, Max: %v, Avg: %v, Pods scheduler per second: %.2f",
 				len(pods),
 				scheduled,
 				len(pods)-scheduled,
 				m,
-				avg,
-				func() float64 {
-					if m.Seconds() == 0 {
-						return 0
-					}
-					return float64(len(pods)) / m.Seconds()
-				}())
+				avg, countPerSecond)
 
 		case <-stopCh:
 			break
