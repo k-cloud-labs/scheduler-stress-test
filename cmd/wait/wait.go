@@ -130,7 +130,7 @@ func (t *task) Start(ctx context.Context) error {
 			)
 
 			for _, pod := range pods {
-				if pod.CreationTimestamp.Time.Unix() < start.Unix() {
+				if pod.CreationTimestamp.Time.Before(start) {
 					start = pod.CreationTimestamp.Time
 				}
 
@@ -139,7 +139,7 @@ func (t *task) Start(ctx context.Context) error {
 					scheduled++
 					scheduleTime := cond.LastTransitionTime.Sub(pod.CreationTimestamp.Time)
 					avg += scheduleTime
-					if end.Unix() < cond.LastTransitionTime.Unix() {
+					if end.Before(cond.LastTransitionTime.Time) {
 						end = cond.LastTransitionTime.Time
 					}
 				}
