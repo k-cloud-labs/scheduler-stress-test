@@ -36,14 +36,14 @@ spec:
 status:
   allocatable:
     cpu: "64"
-    ephemeral-storage: "289839513121"
+    ephemeral-storage: 1Ti
     hugepages-1Gi: "0"
     hugepages-2Mi: "0"
     memory: 250Gi
     pods: "110"
   capacity:
     cpu: "64"
-    ephemeral-storage: 307125Mi
+    ephemeral-storage: 1Ti
     hugepages-1Gi: "0"
     hugepages-2Mi: "0"
     memory: 250Gi
