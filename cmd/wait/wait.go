@@ -161,7 +161,7 @@ func (t *task) Start(ctx context.Context) error {
 				if m.Seconds() == 0 {
 					return 0
 				}
-				return float64(len(pods)) / m.Seconds()
+				return float64(scheduled) / m.Seconds()
 			}()
 
 			klog.Infof("All: %d, Scheduled: %d, Unscheduled: %d, Max: %v, Avg: %v, Pods scheduler per second: %.2f",
