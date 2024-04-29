@@ -91,7 +91,7 @@ wait 命令等待所有上述创建的 pod 被调度并连续打印结果。
 sst create --kubeconfig=/root/.kube/config --count 1000 --concurrency 1000 --pod-template=pod.yaml
 
 # 等待结果
-sst wait --kubeconfig=/root/.kube/config --namespace=seduler-stress-test
+sst wait --kubeconfig=/root/.kube/config --namespace=scheduler-stress-test
 ```
 
 上述示例使用项目中的 pod.yaml 作为模板，在 k8s 集群的 scheduler-stress-test 命名空间中创建了 1000 个 pod。然后等待并连续打印结果，您可以根据需要修改 pod.yaml 文件。
