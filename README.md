@@ -85,7 +85,7 @@ Example:
 # create 1000 pod by 1000 concurrency (namespace: scheduler-stress-test)
 sst create --kubeconfig=/root/.kube/config --count 1000 --concurrency 1000 --pod-template=pod.yaml
 # wait result
-sst wait --kubeconfig=/root/.kube/config --namespace=seduler-stress-test
+sst wait --kubeconfig=/root/.kube/config --namespace=scheduler-stress-test
 ```
 
 The example above uses "pod.yaml" as a template and creates 1000 pods in the "scheduler-stress-test" namespace of the k8s cluster. It then waits and continuously prints the results. You can modify the "pod.yaml" file as needed.  
